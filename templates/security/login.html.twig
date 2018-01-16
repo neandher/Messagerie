@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(form, {'action': path('login_check'), 'attr': {'class': 'form-signin'}}) }}
+    <h2 class="form-signin-heading">Login</h2>
+    {% if last_error %}
+        <div class="alert alert-danger">{{ last_error.messageKey|trans(last_error.messageData, 'security') }}</div>
+    {% endif %}
+    {{ form_row(form.email, {'attr': {'value': last_username}}) }}
+    {{ form_row(form.password) }}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    {{ form_widget(form._token) }}
+    {{ form_end(form) }}
+
+{% endblock %}

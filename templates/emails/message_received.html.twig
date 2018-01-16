@@ -1,0 +1,5 @@
+<h3>{{ message_received.from.name }} sent you a message!</h3>
+
+<strong>{{ message_received.content|nl2br }}</strong>
+
+<p>Message sent on: {{ message_received.createdAt|date('d/m/Y H:i') }}</p>

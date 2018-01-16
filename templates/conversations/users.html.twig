@@ -1,0 +1,13 @@
+<div class="col-md-3">
+    <div class="list-group">
+        {% for user in users %}
+            <a href="{{ path('conversations_show', {user: user.id}) }}"
+               class="list-group-item d-flex justify-content-between align-items-center">
+                {{ user.name }}
+                {% if user.unread is not null %}
+                    <span class="badge badge-pill badge-primary">{{ user.unread.count }}</span>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+</div>

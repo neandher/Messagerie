@@ -1,0 +1,47 @@
+security:
+
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 13
+
+    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory: { memory: ~ }
+        user_db:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/
+            provider: user_db
+            form_login:
+                provider: user_db
+                login_path: login
+                check_path: login_check
+                username_parameter: login[email]
+                password_parameter: login[password]
+                failure_path: login
+                default_target_path: default
+                use_forward: false
+                use_referer: true
+            logout:
+                path: logout
+                target: login
+            anonymous: true
+
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }

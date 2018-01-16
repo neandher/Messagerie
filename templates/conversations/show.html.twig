@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {% include 'conversations/users.html.twig' with {'users': users} %}
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">{{ user.name }}</div>
+                <div class="card-body conversations">
+                    {% if messages.hasNextPage %}
+                        <div class="text-center">
+                            <a href="{{ path('conversations_show', {'user': user.id}) ~ '?page=' ~ messages.nextPage }}"
+                               class="btn btn-light">Carregar antigas</a>
+                        </div>
+                    {% endif %}
+                    {% for message in messages|reverse %}
+                        <div class="row">
+                            <div class="col-md-10 {% if message.from.id != user.id %}offset-md-2 text-right{% endif %}">
+                                <p>
+                                    <strong>
+                                        {% if message.from.id != user.id %}Eu{% else %}{{ message.from.name }}{% endif %}
+                                    </strong><br>
+                                    {{ message.content|nl2br }}
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                    {% if messages.hasPreviousPage %}
+                        <div class="text-center">
+                            <a href="{{ path('conversations_show', {'user': user.id}) ~ '?page=' ~ messages.previousPage }}"
+                               class="btn btn-light">Carregar recentes</a>
+                        </div>
+                        <br>
+                    {% endif %}
+                    {{ form_start(form) }}
+                    {{ form_row(form.content) }}
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
